@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+        <title>Optimise HTML5 Apps For Mobile WebKit</title>
+
+        <!-- Bootstrap Core CSS -->
+        <link href="/theme/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="/theme/css/clean-blog.min.css" rel="stylesheet">
+
+        <!-- Code highlight color scheme -->
+            <link href="/theme/css/code_blocks/darkly.css" rel="stylesheet">
+
+            <!-- CSS specified by the user -->
+            <link href="/static/blog.css" rel="stylesheet">
+
+        <!-- Custom Fonts -->
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <script>
+    window.onload = function(ev) {
+      var large = "static/chris-mccormick-new-york-state-big.jpg";
+      var bg = new Image();
+      var style = document.body.style;
+      bg.onload = function() {
+        style["backgroundImage"] = "url(" + large + ")";
+      }
+      bg.src = large;
+    }
+  </script>
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+
+        <meta name="description" content="Use zepto.js not jQuery. Use -webkit-transition and -webkit-transform wherever possible. Especially useful if you are developing with...">
+
+        <meta name="author" content="Chris McCormick">
+
+        <meta name="tags" content="tech">
+        <meta name="tags" content="code">
+        <meta name="tags" content="games">
+        <meta name="tags" content="workblog">
+
+	                <meta property="og:locale" content="">
+		<meta property="og:site_name" content="McCormick Tech">
+
+	<meta property="og:type" content="article">
+            <meta property="article:author" content="/author/chris-mccormick.html">
+	<meta property="og:url" content="/optimise-html5-apps-for-mobile-webkit.html">
+	<meta property="og:title" content="Optimise HTML5 Apps For Mobile WebKit">
+	<meta property="article:published_time" content="2012-12-10 14:50:36+08:00">
+            <meta property="og:description" content="Use zepto.js not jQuery. Use -webkit-transition and -webkit-transform wherever possible. Especially useful if you are developing with...">
+
+            <meta property="og:image" content="/theme/images/post-bg.jpg">
+</head>
+
+<body class="">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">McCormick Tech</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+        <header class="intro-header" style="background-color: transparent">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>Optimise HTML5 Apps For Mobile WebKit</h1>
+                        <span class="meta">Mon 10 December 2012</span>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="content">
+    <!-- Post Content -->
+    <article>
+        <ul>
+<li>Use <a href="http://zeptojs.com/">zepto.js</a> not jQuery.</li>
+<li>Use -webkit-transition and -webkit-transform wherever possible.</li>
+</ul>
+<p>Especially useful if you are developing with PhoneGap/Cordova on iPad and iPhone, or Android. Those webkit transforms saved my bacon on a recent iPad project. Here is the basic CSS you want to put on an element you want to optimise:</p>
+<div class="highlight"><pre><span></span><span class="nt">-webkit-transition</span><span class="o">:</span> <span class="nt">-webkit-transform</span> <span class="nt">0ms</span><span class="o">;</span>
+<span class="nt">-webkit-backface-visibility</span><span class="o">:</span> <span class="nt">hidden</span><span class="o">;</span>
+</pre></div>
+
+
+<p>Try replacing <code>$(this).hide();</code> with a transform that moves the element off screen like this (might need <code>overflow: hidden</code> on your <code>body</code> tag):</p>
+<div class="highlight"><pre><span></span>$(this).css(&quot;-webkit-transform&quot;, &quot;translateX(1500px)&quot;);
+</pre></div>
+
+
+<p>Then when you want to show the element again do this instead:</p>
+<div class="highlight"><pre><span></span>$(this).css(&quot;-webkit-transform&quot;, &quot;translateX(0px)&quot;);
+</pre></div>
+
+
+<p>I also had great success replacing jQuery UI drag-and-drop code with something hand-rolled:</p>
+<div class="highlight"><pre><span></span>$(this).css(&quot;-webkit-transform&quot;, &quot;translateX(&quot; + relativeX + &quot;px) translateY(&quot; + relativeY + &quot;px)&quot;);
+</pre></div>
+
+
+<p>Hope this helps you!</p>
+    </article>
+
+        <div class="tags">
+            <p>tags: <a href="/tag/tech.html">tech</a>, <a href="/tag/code.html">code</a>, <a href="/tag/games.html">games</a>, <a href="/tag/workblog.html">workblog</a></p>
+        </div>
+
+    <hr>
+
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                            <li>
+                                <a href="https://github.com/chr15m">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="mailto:chris@mccormickit.com">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://mccormickit.com/resume">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-file fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                    </ul>
+<p class="copyright text-muted">
+    Blog powered by <a href="http://getpelican.com">Pelican</a>,
+    which takes great advantage of <a href="http://python.org">Python</a>. <br />        &copy;  Chris McCormick
+</p>                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="/theme/js/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/theme/js/bootstrap.min.js"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="/theme/js/clean-blog.min.js"></script>
+
+</body>
+
+</html>

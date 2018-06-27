@@ -1,0 +1,102 @@
+body {
+  background-image: url(../static/chris-mccormick-new-york-state.jpg);
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+header.intro-header {
+  background-color: transparent !important;
+}
+
+article img, article iframe {
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.navbar-default {
+  background-color: transparent;
+  border: 0px;
+}
+
+.navbar-header button {
+  display: none;
+}
+
+div.post-heading, div.page-heading {
+  padding-top: 0px !important;
+  padding-bottom: 10px !important;
+  text-align: center;
+}
+
+div.post-heading h1, div.page-heading h1 {
+  color: #333;
+}
+
+div.page-heading .list-inline i {
+  color: #555;
+  font-size: 1.5em;
+  text-shadow: 0px 0px 3px #eee;
+}
+
+div.page-heading .list-inline i:hover {
+  color: #0085a1;
+}
+
+div.post-heading *, div.page-heading * {
+  color: #555;
+  text-shadow: 0px 0px 3px #eee;
+}
+
+.intro-header .meta a {
+  color: #111 !important;
+}
+
+.post-heading .meta {
+  color: #333 !important;
+  text-shadow: 0px 0px 3px #eee;
+}
+
+.intro-header h1 {
+  font-size: 2em !important;
+  padding-top: 2em;
+}
+
+.intro-header *, .post-heading * {
+  text-shadow: 0px 0px 3px #eee;
+}
+
+body.main .navbar-brand {
+  display: none;
+}
+
+.navbar-brand {
+  padding-top: 0.25em;
+  color: white !important;
+}
+
+body > .container {
+  background-color: white;
+  border-radius: 5px;
+}
+
+div.tags {
+  display: none !important;
+}
+
+hr {
+  display: none;
+}
+
+article hr {
+  display: block !important;
+}
+
+.content {
+  box-sizing: border-box;
+  padding-left: 2em;
+  padding-right: 2em;
+}

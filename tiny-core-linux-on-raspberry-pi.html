@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+        <title>Tiny Core Linux on Raspberry Pi</title>
+
+        <!-- Bootstrap Core CSS -->
+        <link href="/theme/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="/theme/css/clean-blog.min.css" rel="stylesheet">
+
+        <!-- Code highlight color scheme -->
+            <link href="/theme/css/code_blocks/darkly.css" rel="stylesheet">
+
+            <!-- CSS specified by the user -->
+            <link href="/static/blog.css" rel="stylesheet">
+
+        <!-- Custom Fonts -->
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <script>
+    window.onload = function(ev) {
+      var large = "static/chris-mccormick-new-york-state-big.jpg";
+      var bg = new Image();
+      var style = document.body.style;
+      bg.onload = function() {
+        style["backgroundImage"] = "url(" + large + ")";
+      }
+      bg.src = large;
+    }
+  </script>
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+
+        <meta name="description" content="I'm discovering Tiny Core Linux, a beautifully executed, minimalist, immutable-by-default GNU/Linux distribution that runs nicely on the...">
+
+        <meta name="author" content="Chris McCormick">
+
+        <meta name="tags" content="tech">
+        <meta name="tags" content="life">
+        <meta name="tags" content="philosophy">
+        <meta name="tags" content="workblog">
+
+	                <meta property="og:locale" content="">
+		<meta property="og:site_name" content="McCormick Tech">
+
+	<meta property="og:type" content="article">
+            <meta property="article:author" content="/author/chris-mccormick.html">
+	<meta property="og:url" content="/tiny-core-linux-on-raspberry-pi.html">
+	<meta property="og:title" content="Tiny Core Linux on Raspberry Pi">
+	<meta property="article:published_time" content="2018-02-03 13:34:57+08:00">
+            <meta property="og:description" content="I'm discovering Tiny Core Linux, a beautifully executed, minimalist, immutable-by-default GNU/Linux distribution that runs nicely on the...">
+
+            <meta property="og:image" content="/theme/images/post-bg.jpg">
+</head>
+
+<body class="">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">McCormick Tech</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+        <header class="intro-header" style="background-color: transparent">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>Tiny Core Linux on Raspberry Pi</h1>
+                        <span class="meta">Sat 03 February 2018</span>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="content">
+    <!-- Post Content -->
+    <article>
+        <p><img alt="Tiny Core Linux SSH screenshot" src="https://mccormick.cx/gfx/blogref/tinycore-screenshot.png"></p>
+<p>I'm discovering Tiny Core Linux, a beautifully executed, minimalist, immutable-by-default GNU/Linux distribution that runs nicely on the Raspberry Pi and other x86 and ARM devices.</p>
+<p>The documentation is comprehensive but arcane so here are my field notes.</p>
+<p>I'm using <strong>piCore</strong> the Raspberry Pi variant of TinyCore but most of these notes should work for other variants too. These notes assume you are already a GNU/Linux desktop user and know basic Linux command line fu.</p>
+<p><img alt="Happy penguin jumping" src="https://mccormick.cx/gfx/blogref/happy-penguin-jumping.svg"></p>
+<p>I'm a huge fan of this distribution!</p>
+<p><a href="http://www.tinycorelinux.net/ports.html">Official disk images</a>.</p>
+<p><a href="http://tinycorelinux.net/9.x/armv6/releases/RPi/README">Here's the official README for the Raspberry Pi version</a>.</p>
+<h3>Write the disk image to your SD card</h3>
+<div class="highlight"><pre><span></span>sudo dd if=piCore-9.0.3.img of=/dev/mmcblk0
+</pre></div>
+
+
+<p>Make sure you get your sd card's device (e.g. <code>mmcblk0</code>) correct so you don't overwrite the wrong disk!</p>
+<p>Tip: you can see where <code>dd</code> is up to by sending it a signal:</p>
+<div class="highlight"><pre><span></span>sudo kill -SIGUSR1 `pgrep -f mmcblk0`
+</pre></div>
+
+
+<p>After this put the sd card into your Raspberry Pi and it'll boot Tiny Core Linux with an SSH server running so that you can access it remotely over the network.</p>
+<h3>Find the Pi on your network</h3>
+<p><a href="https://gist.github.com/chr15m/8a79b891c680af3bff7704d3d3860fb4">find-pis: use this little script</a> to find the Raspberry Pi on your network so that you can ssh to it.</p>
+<p>Default login:</p>
+<div class="highlight"><pre><span></span><span class="n">username</span><span class="o">:</span> <span class="n">tc</span>
+<span class="n">password</span><span class="o">:</span> <span class="n">piCore</span>
+</pre></div>
+
+
+<h3>Immutable by default</h3>
+<p>Tiny Core Linux is a perfect fit for Raspberry Pi because it does not write to disk by default. Note that between reboots if you want to persist any changes you've made, you need to do it manually with <code>filetool.sh -b</code>. You'll especially want to do this after first boot to persist the SSH server keys. This includes any changes you make to files in the home directory.</p>
+<p>This lack of disk writes is a huge boon because it prevents issues that distributions like Raspbian have with SD card corruption when you power off the Raspberry Pi. Immutability is also just a good thing generally for building robust software systems.</p>
+<h3>Tiny Core Linux package repository</h3>
+<p>The packages are <code>.tcz</code> files which like most package formats are a zipped up collection of files with some metadata. You can browse the <a href="http://www.tinycorelinux.net/9.x/armv6/tcz/">packages available to the Raspberry Pi distribution</a>.</p>
+<h3>Various useful commands</h3>
+<p>Persist current state to disk:</p>
+<div class="highlight"><pre><span></span>filetool.sh -b
+</pre></div>
+
+
+<p>Where to specify additional default file locations for persistence:</p>
+<div class="highlight"><pre><span></span>/opt/.filetool.lst
+</pre></div>
+
+
+<p>Download and install packages (nodejs binary package in this example):</p>
+<div class="highlight"><pre><span></span>tce-load -wi node.tcz
+</pre></div>
+
+
+<p>Show which packages are currently installed:</p>
+<div class="highlight"><pre><span></span>tce-status -i
+</pre></div>
+
+
+<p>Install a package for doing C/C++ compilation &amp; development:</p>
+<div class="highlight"><pre><span></span>tce-load -wi compiletc
+</pre></div>
+
+
+<p>Find current OS version info:</p>
+<div class="highlight"><pre><span></span>version
+</pre></div>
+
+
+<p>Search for and install packages with console UI:</p>
+<div class="highlight"><pre><span></span>tce
+</pre></div>
+
+
+<p>Where to put your own startup and shutdown scripts:</p>
+<div class="highlight"><pre><span></span>/opt/bootlocal.sh
+/opt/shutdown.sh
+</pre></div>
+
+
+<h3>Getting WiFi working</h3>
+<p>You'll want the packages <code>wifi</code> and <code>firmware-rpi3-wireless</code> and then reboot and set up a connection:</p>
+<div class="highlight"><pre><span></span>sudo wifi.sh
+</pre></div>
+
+
+<p>Don't forget to persist your changes.</p>
+<h3>Getting sound working</h3>
+<p>You'll want the <code>alsa</code> and <code>alsa-utils</code> packages.</p>
+<p>I managed to compile <a href="https://en.wikipedia.org/wiki/Pure_Data">Pure Data</a> and output a basic test tone. I went into the <code>src</code> folder of Pd and issued <code>make -f makefile.gnu</code> to build it from the source after checking it out <a href="https://github.com/pure-data/pure-data/">from git</a>.</p>
+<h3>GPIO access</h3>
+<p>I managed to interface with the Raspberry Pi GPIO by installing <code>node</code> and then using the <code>onoff</code> package installed via <code>npm</code>. Lots of dev packages were required for a successful build (<code>compiletc</code> probably covers most of them). Each time npm threw an error I looked at what the error message was to determine which package to install next until it built successfully.</p>
+<p>I managed to get an LED to blink on pin 16 with this code:</p>
+<div class="highlight"><pre><span></span>var Gpio = require(&#39;onoff&#39;).Gpio;
+led = new Gpio(16, &#39;out&#39;);
+led.writeSync(1);
+c = 0
+setInterval(function() { led.writeSync(Number(c = !c)); }, 1000);
+</pre></div>
+
+
+<p>I had to run <code>node</code> as root to get access to the GPIO.</p>
+<h3>Philosophical waxing</h3>
+<p>GNU/Linux has now been subsumed into the technological substrates of the world. It is found in most phones, servers and appliances that people interact with every day. There are probably 10 copies of Linux running in the median developed-world household. It has become infrastructure, like roads and wires and water pipes.</p>
+<p>I don't see that many young people at GNU/Linux meetups these days. I don't think we GNU/Linux nerds are required by the world in the same way that we were before when it was sparkly and new.</p>
+<p>It's exciting for me to find Tiny Core Linux which has re-ignited the spark of enthusiasm for this technology.</p>
+    </article>
+
+        <div class="tags">
+            <p>tags: <a href="/tag/tech.html">tech</a>, <a href="/tag/life.html">life</a>, <a href="/tag/philosophy.html">philosophy</a>, <a href="/tag/workblog.html">workblog</a></p>
+        </div>
+
+    <hr>
+
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                            <li>
+                                <a href="https://github.com/chr15m">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="mailto:chris@mccormickit.com">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://mccormickit.com/resume">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-file fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                    </ul>
+<p class="copyright text-muted">
+    Blog powered by <a href="http://getpelican.com">Pelican</a>,
+    which takes great advantage of <a href="http://python.org">Python</a>. <br />        &copy;  Chris McCormick
+</p>                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="/theme/js/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/theme/js/bootstrap.min.js"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="/theme/js/clean-blog.min.js"></script>
+
+</body>
+
+</html>
