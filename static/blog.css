@@ -61,7 +61,7 @@ div.post-heading *, div.page-heading * {
 }
 
 .intro-header h1 {
-  font-size: 2em !important;
+  font-size: 2em;
   padding-top: 2em;
 }
 
@@ -75,7 +75,6 @@ body.main .navbar-brand {
 
 .navbar-brand {
   padding-top: 0.25em;
-  color: white !important;
 }
 
 body > .container {
