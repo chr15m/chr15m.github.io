@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+        <title>Decentralized Identity Linking</title>
+
+        <link href="https://mccormick.cx/news/tags/workblog.rss" type="application/atom+xml" rel="alternate" title="McCormick Tech Full Atom Feed" />
+        <!-- Bootstrap Core CSS -->
+        <link href="/theme/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="/theme/css/clean-blog.min.css" rel="stylesheet">
+
+        <!-- Code highlight color scheme -->
+            <link href="/theme/css/code_blocks/darkly.css" rel="stylesheet">
+
+            <!-- CSS specified by the user -->
+            <link href="/static/blog.css" rel="stylesheet">
+
+        <!-- Custom Fonts -->
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <script>
+    window.onload = function(ev) {
+      var large = "static/chris-mccormick-new-york-state-big.jpg";
+      var bg = new Image();
+      var style = document.body.style;
+      bg.onload = function() {
+        style["backgroundImage"] = "url(" + large + ")";
+      }
+      bg.src = large;
+    }
+  </script>
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+
+        <meta name="description" content="A problem faced by decentralized systems is that of naming things. The problem is best expressed by Zooko's Triangle which conjectured...">
+
+        <meta name="author" content="Chris McCormick">
+
+        <meta name="tags" content="cryptography">
+        <meta name="tags" content="blockchain">
+        <meta name="tags" content="politics">
+        <meta name="tags" content="philosophy">
+        <meta name="tags" content="tech">
+        <meta name="tags" content="workblog">
+        <meta name="tags" content="code">
+        <meta name="tags" content="design">
+
+	                <meta property="og:locale" content="">
+		<meta property="og:site_name" content="McCormick Tech">
+
+	<meta property="og:type" content="article">
+            <meta property="article:author" content="/author/chris-mccormick.html">
+	<meta property="og:url" content="/decentralized-identity-linking.html">
+	<meta property="og:title" content="Decentralized Identity Linking">
+	<meta property="article:published_time" content="2018-08-31 09:46:59+08:00">
+            <meta property="og:description" content="A problem faced by decentralized systems is that of naming things. The problem is best expressed by Zooko's Triangle which conjectured...">
+
+            <meta property="og:image" content="/theme/images/post-bg.jpg">
+</head>
+
+<body class="">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">McCormick Tech</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+        <header class="intro-header" style="background-color: transparent">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>Decentralized Identity Linking</h1>
+                        <span class="meta">Fri 31 August 2018</span>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="content">
+    <!-- Post Content -->
+    <article>
+        <p><img alt="Decentralized identity linking animation" src="https://mccormick.cx/gfx/blogref/decentralized-identity-linking/decentralized-identity-linking-animation.gif"></p>
+<p>A problem faced by decentralized systems is that of naming things. The problem is best expressed by <a href="https://en.wikipedia.org/wiki/Zooko%27s_triangle">Zooko's Triangle</a> which conjectured that no single kind of naming system can provide names satisfying all three of the following properties:</p>
+<ul>
+<li>Human-meaningful: Meaningful and memorable (low-entropy) names are provided to the users.</li>
+<li>Secure: The amount of damage a malicious entity can inflict on the system should be as low as possible.</li>
+<li>Decentralized: Names correctly resolve to their respective entities without the use of a central authority or service.</li>
+</ul>
+<p>Something as simple as a user handle or nickname becomes a complex issue in a decentralized system. What you ultimately want is something like a decentralized Twitter handle. The handle is a single human-memorable string which points to one and only one user in the system. The first user to register a particular name gets to claim that name. Obviously the case of Twitter handles is not decentralized as it requires the Twitter database as a single point of authority on who owns which name.</p>
+<p>As the Wikipedia article points out, and Zooko has acknowledged, the invention of the <a href="https://en.wikipedia.org/wiki/Blockchain">Blockchain</a> allows for solutions under certain conditions. However the effort required to design, build, and deploy a Blockchain along side your distributed application are quite steep. If you want to use an existing Blockchain implementation then either your users must be invested in it or your app must invest in it and pay for name registrations.</p>
+<p>The former situation requires your users to not just install your app but also to acquire some particular Blockchain currency which steepens the barrier to entry for your app. The latter alternative requires your app to fork out for registrations which means the naming system of your decentralized app will fail if you or whichever entity is paying for the names shuts down.</p>
+<h3>The Keybase Method</h3>
+<p>In a decentralized system "one user" often means "one or more cryptographic key pairs". The site <a href="https://keybase.io/">Keybase</a> offers a good alternative naming system in the situation where "user" means "keypair". The solution is to use existing online identities held at different providers and link them cryptographically to the user's key(s). This means that third parties can verify an identity as follows:</p>
+<blockquote>
+<p>@zooko on Twitter has public key B123h9EAgVdnXWjxUa3N9Amg1nmMeG2u7.</p>
+</blockquote>
+<p>Or to put it more rigorously:</p>
+<blockquote>
+<p>A person who has control of the private key corresponding to public key X also has write access to online service at Y.</p>
+</blockquote>
+<p>A lot of the time when we want a name for something, the latter is what we actually want. We want to know that the existing relationship and trust I have for @zooko on Twitter can be carried over into this new decentralized system I have started using. If I have multiple existing relationships on different services with @zooko on Twitter then I can also verify those and in the decentralized app I can give @zooko the simple name "zooko" (which can often be inferred from usernames on services) and refer to the person with that handle from that point forward.</p>
+<p>The way that Keybase does this is to help the user to sign a statement with their signing key saying "I am @name on service X" and then post the text and resulting signature on the service itself and keep a record of where somebody can find the post. If you do this it means you can prove to people that your signing key is associated with some existing internet identity such as your Twitter account. People who want to remain anonymous or pseudonymous with respect to their existing internet identities can simply skip this linking step.</p>
+<p>This technique can actually be used to link any internet location that the user has write-access to back to a public key that they have the private key for. You simply sign a statement saying "I have write access to location X." and post it at "location X". Some examples:</p>
+<ul>
+<li>I have write access to https://mccormick.cx/ -&gt; post signed message as textfile there.</li>
+<li>I have write access to https://twitter.com/mccrmx -&gt; post signed message as tweet there.</li>
+<li>I have write access to https://github.com/chr15m -&gt; post signed message as gist there.</li>
+</ul>
+<p>Links to the signed post are kept and shared with other users who wish to verify the existing relationship.</p>
+<p><img alt="A hand drawn lock" src="https://mccormick.cx/gfx/blogref/lock-sketch.png"></p>
+<h3>The decentralized "Keybase method"</h3>
+<p>Keybase is a centralized website and system which means that it has convenient integrations and is easy to use, but it relies on their infrastructure and centralized, proprietary software. The good news is it's possible to use the exact same technique that they use in a decentralized system. Doing this gives a user the power to make statements like:</p>
+<blockquote>
+<p>@zooko on Twitter is me (B123h9EAgVdnXWjxUa3N9Amg1nmMeG2u7) on this decentralized service.</p>
+</blockquote>
+<p>And then other people can confidently start using the name "zooko:twitter" in the place of B123h9EAgVdnXWjxUa3N9Amg1nmMeG2u7 in the decentralized system. In fact if the person has signed proof-of-write-access on multiple services and they have the same username on those services we might as well just start calling them "zooko" instead of "zooko:twitter+github". If two zooko's come along then we can just refer to them by their specific service-postfixed names, or some other qualifier, so that we can differentiate when interacting with them - see below for more on solving this "two Johns" problem.</p>
+<p>What this means is that "zooko" in the decentralized system becomes a short-hand way of referring to an entity with whom we interact on a constellation of sites. In some ways this is more robust than naming systems on centralized systems (where anybody can "steal" a username by registering it before somebody else) because the alias actually represents the relationship rather than an entry in one specific proprietary database.</p>
+<p>So how can we do the same thing in a decentralized system? Quite easily:</p>
+<p>For each service the user is on:</p>
+<ul>
+<li>They sign a statement saying they have write-access to their account at that proprietary service with the signing key that they use on the decentralized service.</li>
+<li>They then post the signed statement to the proprietary service.</li>
+<li>When users are connected for the first time each user shares their links to "proof of linked identities" (if any) so that they can verify any existing Internet identities.</li>
+</ul>
+<h3>No-namers &amp; the contacts list model</h3>
+<p>What about in the case where somebody does not sign anything to say that they own some existing online aliases? What if your Mum starts using decentralized service X and she does not have a GitHub or Twitter account? What if somebody chooses not to link their existing identities and instead decides to start afresh?</p>
+<p>In the real world we don't really get to name ourselves. We can suggest a name to people, but they get to call us whatever they want. This is how nicknames happen and it's a bit of an aberration that in the online world we get to choose one canonical name by which people call us on proprietary services.</p>
+<p>What if naming in online systems worked more like the decentralized real world? What if we suggested a name by which somebody could call us, but it was up to them to use it or to choose a different name by which to call us? What if, in this new decentralized service that my Mum has started using, I simply refer to her as "mum"?</p>
+<p>If somebody has no existing online identities they can simply suggest a name when two users first connect and trade keypairs. The receiving party can then choose to adopt the suggested handle for that user, or if there is some conflict in their existing set of collected aliases, add a qualifier, or choose an entirely different name that makes sense to them.</p>
+<p>This is the "contacts list" model of naming. You can tell me your name but I don't have to use it for your entry in my contacts list. I can adopt the name you've suggested but if I know two "Johns" then I'm likely to add some other qualifier like "Tennis John" and "Football John".</p>
+<p>Aside: it would be funny if even DNS worked like this. The first time you loaded Google it would suggest to you "please call me google.com" but you could choose whatever name you wanted to type into the URL bar from that point forward. Norms would form between humans using the internet for what different sites would be called, and sometimes they would be called something different than what the person owning the domain wanted.</p>
+<p>I don't think I would use "google.com" for example. I can think of some better names for that site.</p>
+<h3>Summary</h3>
+<p>The system proposed here for naming users in decentralized way uses an amalgam of two models: Keybase-style service signing, and the contacts list model.</p>
+<p><img alt="Detailed view of decentralized identity linking contact card" src="https://mccormick.cx/gfx/blogref/decentralized-identity-linking/decentralized-identity-linking-detailed.svg"></p>
+<p>To summarize the process of managing identities in this system:</p>
+<ul>
+<li>Each user in the decentralized app is identified by one or more cryptographic key pairs.</li>
+<li>A user may set a suggested handle they'd like other people to use.</li>
+<li>Optionally a user is able to add existing identities (Twitter, GitHub).</li>
+<li>Optionally the app helps the user create cryptographically signed back-links from their existing internet identities to the keypair.</li>
+<li>The app stores the user's links to their signed posts if any.</li>
+<li>When user A sees some user B for the first time the client receives the following information about user B:</li>
+<li>Their public key or fingerprint.</li>
+<li>Their suggested handle.</li>
+<li>URLs of their cryptographically signed identity-linking posts.</li>
+<li>The app then fetches user B's identity-link posts and verifies the signatures found there.</li>
+<li>Optionally user A is able to modify or supply their own local name (handle) for user B.</li>
+<li>The app creates a contact entry for user B with this information.</li>
+<li>When displaying user B the application uses the handle (chosen by user A) stored in the contact card.</li>
+<li>Under the hood the application uses user B's public key or cryptographic fingerprint/address to refer to that user.</li>
+<li>In the user interface the contact card is visible appropriately: for example on hover of user B's handle.</li>
+<li>The displayed card shows user B's handle, identity-links with verification status, and public key or fingerprint.</li>
+</ul>
+<p>The raw public key or fingerprint(s) can additionally be used to verify real world identity out-of-band such as at key signing parties, personal meeting, or over a known secure channel.</p>
+<p>Read <a href="/news/tags/cryptography">more posts on the subject of cryptography</a>.</p>
+    </article>
+
+        <div class="tags">
+            <p>tags: <a href="/tag/cryptography.html">cryptography</a>, <a href="/tag/blockchain.html">blockchain</a>, <a href="/tag/politics.html">politics</a>, <a href="/tag/philosophy.html">philosophy</a>, <a href="/tag/tech.html">tech</a>, <a href="/tag/workblog.html">workblog</a>, <a href="/tag/code.html">code</a>, <a href="/tag/design.html">design</a></p>
+        </div>
+
+    <hr>
+
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                            <li>
+                                <a href="https://github.com/chr15m">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="mailto:chris@mccormickit.com">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://mccormickit.com/resume">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-file fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://mccormick.cx/news/tags/workblog.rss">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                    </ul>
+<p class="copyright text-muted">
+    Blog powered by <a href="http://getpelican.com">Pelican</a>,
+    which takes great advantage of <a href="http://python.org">Python</a>. <br />        &copy;  Chris McCormick
+</p>                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="/theme/js/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/theme/js/bootstrap.min.js"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="/theme/js/clean-blog.min.js"></script>
+
+</body>
+
+</html>
