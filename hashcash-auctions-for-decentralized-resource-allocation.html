@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+        <title>Hashcash Auctions for Decentralized Resource Allocation</title>
+
+        <link href="https://mccormick.cx/news/tags/workblog.rss" type="application/atom+xml" rel="alternate" title="McCormick Tech Full Atom Feed" />
+        <!-- Bootstrap Core CSS -->
+        <link href="/theme/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="/theme/css/clean-blog.min.css" rel="stylesheet">
+
+        <!-- Code highlight color scheme -->
+            <link href="/theme/css/code_blocks/darkly.css" rel="stylesheet">
+
+            <!-- CSS specified by the user -->
+            <link href="/static/blog.css" rel="stylesheet">
+
+        <!-- Custom Fonts -->
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <script>
+    window.onload = function(ev) {
+      var large = "static/chris-mccormick-new-york-state-big.jpg";
+      var bg = new Image();
+      var style = document.body.style;
+      bg.onload = function() {
+        style["backgroundImage"] = "url(" + large + ")";
+      }
+      bg.src = large;
+    }
+  </script>
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+
+        <meta name="description" content="Abstract Hashcash is a mechanism for defending against spam and denial-of-service attacks in email and other decentralized systems....">
+
+        <meta name="author" content="Chris McCormick">
+
+        <meta name="tags" content="tech">
+        <meta name="tags" content="cryptography">
+        <meta name="tags" content="hashcash">
+        <meta name="tags" content="proof-of-work">
+        <meta name="tags" content="bitcoin">
+        <meta name="tags" content="workblog">
+
+	                <meta property="og:locale" content="">
+		<meta property="og:site_name" content="McCormick Tech">
+
+	<meta property="og:type" content="article">
+            <meta property="article:author" content="/author/chris-mccormick.html">
+	<meta property="og:url" content="/hashcash-auctions-for-decentralized-resource-allocation.html">
+	<meta property="og:title" content="Hashcash Auctions for Decentralized Resource Allocation">
+	<meta property="article:published_time" content="2018-10-27 15:11:27+08:00">
+            <meta property="og:description" content="Abstract Hashcash is a mechanism for defending against spam and denial-of-service attacks in email and other decentralized systems....">
+
+            <meta property="og:image" content="/theme/images/post-bg.jpg">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@mccrmx">
+        <meta name="twitter:title" content="Hashcash Auctions for Decentralized Resource Allocation">
+
+            <meta name="twitter:image" content="/theme/images/post-bg.jpg">
+
+            <meta name="twitter:description" content="Abstract Hashcash is a mechanism for defending against spam and denial-of-service attacks in email and other decentralized systems....">
+</head>
+
+<body class="">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">McCormick Tech</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+        <header class="intro-header" style="background-color: transparent">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>Hashcash Auctions for Decentralized Resource Allocation</h1>
+                        <span class="meta">Sat 27 October 2018</span>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="content">
+    <!-- Post Content -->
+    <article>
+        <h3>Abstract</h3>
+<p><a href="http://www.hashcash.org/">Hashcash</a> is a mechanism for defending against spam and denial-of-service attacks in email and other decentralized systems. Implementors of systems using hashcash face the issue of how to set the proof-of-work difficulty. A general solution to this problem is given which can be used to predictably allocate resources in decentralized systems where individual nodes each contribute finite resources. Some emergent effects of this solution are explored.</p>
+<p><img alt="Hashcash client-puzzle token represented as a dollar bill" src="https://mccormick.cx/gfx/blogref/hashcash-auctions/hashcash-token.svg"></p>
+<h3>Hashcash</h3>
+<p>Nodes in decentralized systems face two closely related issues around the use of their resources. The first problem is that of how to fairly allocate resourcess between connecting clients, and the second problem is that of how to protect themselves against resource depletion attacks. Some systems, like Bittorrent, largely sidestep these issues because the goals of participants (download the data quickly) are aligned. In other systems such as email, nodes are vulnerable to resource depletion attacks like spam and denial-of-service (DoS) attacks.</p>
+<p>In 1997 Adam Back proposed an ingenious &amp; practical scheme for countering DoS attacks and spam emails called <a href="http://www.hashcash.org/">hashcash</a>. This scheme was famously referenced by, and used with some tweaks, in the software which launched the cryptocurrency revolution: Bitcoin.</p>
+<p>As noted in the <a href="http://hashcash.org/papers/hashcash.pdf">2002 Hashcash paper</a> the idea of using a proof-of-work in this way predates Hashcash in the work of <a href="https://link.springer.com/content/pdf/10.1007%2F3-540-48071-4_10.pdf">Cynthia Dwork &amp; Moni Naor, 1993</a> and later in the client-puzzles work of <a href="https://web.archive.org/web/20110521010318/http://www.isoc.org/isoc/conferences/ndss/99/proceedings/papers/juels.pdf">Ari Juels &amp; John Brainard, 1999</a>.</p>
+<p>Adam Back's implementation is notable because it was based on a modern widely implemented cryptographic hash function, used a cleverly simple leading-zeroes hash collision mechanism which is verifiable with the naked eye, and most importantly of all it came with concise source code which anybody could compile and run ("<a href="https://www.activism.net/cypherpunk/manifesto.html">cypherpunks write code</a>").</p>
+<p>The common idea behind these proof-of-work schemes is that you do not allocate resources to the processing or storage of incoming messages unless the sender has proven that they have done a certain amount of computational work. A spammer or DoS attacker is forced to multiply the work required by the number of attacking nodes they are utilising making it more expensive for them to attack. The key to the proof-of-work mechanism is that it is easier for the receiver to verify the proof than it is for the sender to construct the proof, and secondly, that the receiver can specify how much work the sender needs to perform in order to be considered. In Hashcash the construction of proofs-of-work and their more efficient verification is accomplished with a basic building block of cryptographic systems, a computational trapdoor: the hash function. The second key to proof-of-work, that of the receiver specifying the difficulty to require of clients, is not clearly addressed in this body of work. Here we'll describe a general solution to the problem of setting PoW difficulty and explore some emergent effects of the solution on decentralized systems.</p>
+<p><img alt="Drawing of a pick and shovel" src="https://mccormick.cx/gfx/blogref/hashcash-auctions/pick-and-shovel.svg"></p>
+<h3>The difficulty of calibrating hashcash difficulty</h3>
+<p>In Dwork &amp; Naor (1993) they say:</p>
+<blockquote>
+<p>There is a pricing authority who controls the selection of the pricing function and the setting of usage fees.</p>
+</blockquote>
+<p>And later, in the section on the Fiat-Shamir signature scheme:</p>
+<blockquote>
+<p>A reasonable choice is <code>k = 10</code>.</p>
+</blockquote>
+<p>Where <code>k</code> here is equivalent to what we now call the difficulty in cryptocurrency proof-of-work contexts. Basically "here's a reasonable value to use on today's computers". This strategy is not tenable in many decentralized systems because a pricing authority, or <a href="http://nakamotoinstitute.org/trusted-third-parties/">"trusted third party" is an inherent security risk</a> (Szabo, 2001).</p>
+<p>In Adam Back's 2002 paper there is a section called "Dynamic Throttling":</p>
+<blockquote>
+<p>With interactive hashcash it becomes possible to dynamically adjust the work factor required for the client based on server CPU load.</p>
+</blockquote>
+<p>But it's not clear exactly how much difficulty should be assigned in proportion to the server CPU load.</p>
+<p>Futher, on the <a href="http://www.hashcash.org/bitcoin/">"Bitcoin" page of hashcash.org</a>:</p>
+<blockquote>
+<p>Hashcash difficulty is static and eroded by Moore's law currently 20 bits.</p>
+</blockquote>
+<p>Again we see a "reasonable value to use on today's computers".</p>
+<p>In <a href="http://www.cypherspace.org/bitcoin/hashcash.html">"How bitcoin uses hashcash"</a>:</p>
+<blockquote>
+<p>Hashcash was expected to adjust difficulty every 6 months or year, manually based on observed moore's law estimates. It was proposed that this be measured against a benchmark machine by some vague/undefined human consensus process and broadcast via signed difficulty update headers, and/or long TTL DNS TXT records.</p>
+</blockquote>
+<p>He further points out that Bitcoin's "automatic inflation control" innovation has solved this problem for the cryptocurrency case.</p>
+<p>In the 2002 paper again we see the following in the section on mitigation of TCP connection-slot depletion, which concludes with:</p>
+<blockquote>
+<p>Connections will be handed out to users collectively in rough proportion to their CPU resources, and so fairness is CPU resource based (presuming each user is trying to open as many connections as he can) so the result will be biased in favor of clients with fast processors as they can compute more interactive-hashcash challenge-response tokens per second.</p>
+</blockquote>
+<p>The implementation detail of exactly how much difficulty to require per connection slot is again left as an exercise to the reader. Adam Back's <a href="http://hashcash.org/papers/announce.txt">original hashcash announcement on the Cypherpunks mailing list</a> makes reference to a fixed difficulty of the first 20 bits of zeroes and as noted in the Wikipedia page on hashcash this becomes a sort of de-facto standard reference value.</p>
+<p><img alt="Drawing of a flyer with tear-away tabs" src="https://mccormick.cx/gfx/blogref/hashcash-auctions/take-a-token.svg"></p>
+<h3>Existing solutions</h3>
+<p>How high to set proof-of-work difficulty is of course not completely vague and unsolved. Bitcoin famously pits miners against each other using a hashcash difficulty that is adjusted every two weeks to a value computed from previously achieved hash difficulties. Referring back to the TCP connection slot depletion example in the 2002 paper, we can think of the Bitcoin miner hashcash use-case to be a slot of size 1 that is only available to be filled every 10 minutes. Hash rates are forced upwards by competition for that single slot between miners who will be rewarded under the incentive model of the Bitcoin system.</p>
+<p>There is another mechanism in Bitcoin that we can also borrow from for decentralized systems (absent a fully functional and carefully engineered global store-of-value system called a Blockchain); the fixed block size. In Bitcoin the size of each block storing transaction data, and therefore ultimately the number of transactions, is fixed. This was a point of contention for some time amongst Bitcoin enthusiasts and stakeholders but in the end those supporting a fixed block size had their day and Bitcoin today retains a fixed block size into which transactions from the mempool must be squeezed.</p>
+<p>Every Bitcoin transaction is accompanied by a fee paid to the miner who mines the block in which it is included. To decide which transactions should be accepted into the block they are minting miners naturally refer to these fees out of financial self-interest, to ensure they capture the highest aggregate fee possible. When a new block is minted a miner will sort the transactions from those with the highest fee paid to those with the lowest fee paid. Then they will insert into the block the top-N-by-fee transactions that will fit into the fixed block size.</p>
+<p>So we have three models to build our solution on: the TCP connection slot example, Bitcoin's automatic inflation control, and Bitcoin's fixed block size.</p>
+<p>Consider that in all three of these examples the fundamental resource being allocated is subject to fixed constraint, whether it is TCP slots, Bitcoin issued per 10 minutes, or the transaction-processing capacity of Bitcoin nodes. It is in fact always the case that there are resource limits placed on networked services even if that limit is sometimes so high as to give the illusion of being unlimited. Take for example the original use-case of hashcash, the email inbox: here the limited resource is your own time and attention. There is some practical upper bound on that resource such that you would be fundamentally unable to check your email if you were receiving e.g. 10,000 emails per hour. This is also true of the resources of nodes in any decentralized system.</p>
+<p>We can use the fixed block size model in combination with hashcash to balance load and distribute resources efficiently in decentralised systems with automatic difficulty adjustment and without requiring a full cryptocurrency blockchain implementation or trusted central authority.</p>
+<p><img alt="Drawing of an auctioneer's gavel" src="https://mccormick.cx/gfx/blogref/hashcash-auctions/gavel.svg"></p>
+<h3>Fixed resource hashcash calibration</h3>
+<p>The "fixed block size" mechanism can be used more generally in decentralized systems to protect nodes from resource depletion and deterministically allocate resources by conducting a "hashcash auction" between clients over the available resources.</p>
+<p>The hashcash auction works as follows:</p>
+<ul>
+<li>Each node specifies the number of clients they can comfortably serve as <code>R</code>, given their resource limits on disk, bandwidth, CPU, etc. This can often be computed based on simple measurement of the resource(s) in question.</li>
+<li>Nodes issue HMAC'ed tokens ("symmetric key certificates" in the hashcash paper) to clients who request access which include a timestamp so that they can be expired.</li>
+<li>To use a node's resources, clients must bid for a slot by performing a PoW over these tokens.</li>
+<li>Nodes publish the upper, lower, and median PoW currently acheived by clients occupying the available resource slots <code>R</code>.</li>
+<li>Connecting clients are added to the client pool, which is sorted by PoW difficulty-achieved, and only the top <code>R</code> by difficulty are serviced.</li>
+<li>(Optionally, the lower-bound minimum PoW can be capped, to emulate the same basic DoS protection that hashcash provides.)</li>
+<li>(Optionally, dependent on use-case, clients are disconnected after some time and required to re-bid for a slot).</li>
+</ul>
+<p>In short, you decide how many clients you can service at a time (<code>R</code>), then sort connecting clients by their PoW height, and then deny access to, or disconnect clients who fall outside the top <code>R</code>.</p>
+<p><img alt="Node awaiting client connections" src="https://mccormick.cx/gfx/blogref/hashcash-auctions/figure-1-empty-node.svg"></p>
+<p>Note that the server is not required to store any information relating to the the tokens it gives out to prospective clients because it can use the HMAC to verify the tokens it has issued and the time at which they were issued. In this way the issuance of tokens and their expiry becomes very cheap for a service node.</p>
+<p><img alt="Client bids for a service slot" src="https://mccormick.cx/gfx/blogref/hashcash-auctions/figure-2-bid.svg"></p>
+<p>The natural consequence of a system like this is that clients must compete for available slots to use the node's resources, and a node does not need to specify exactly how much PoW each client must perform. Instead clients arrive at this value through an emergent bottom-up bidding process. The node no longer has to guess at "20 bits" and can instead honestly say "look, here is how hard other clients are working, if you want to access my resources you'll have to do better".</p>
+<p><img alt="Client 4 out-bids" src="https://mccormick.cx/gfx/blogref/hashcash-auctions/figure-3-out-bid.svg"></p>
+<p>The clients themselves determine the proof-of-work difficulty setting in an ongoing auction where they must make a higher bid than other clients in order to be allowed access to consume the fixed set of resources, or go elsewhere.</p>
+<p>To cope with large numbers of clients and provide a higher level of granularity in the PoW ranking, a simple less-than operator can be used so that clients can bid for intermediate values. For example <code>0x01fe &lt; 0x01ff</code> so a client bidding with a hash of <code>0x01fe</code> would beat a client bidding with a hash of <code>0x01ff</code>.</p>
+<h3>Properties of this system</h3>
+<p>What this restricted-resources scheme gives us is a way to <a href="http://www.fon.hum.uva.nl/rob/Courses/InformationInSpeech/CDROM/Literature/LOTwinterschool2006/szabo.best.vwh.net/synch.html">measure the sacrifice</a> (Nick Szabo, 2002,2005) that a client is willing to make for the privilege of using a node's resources. As with the human measure of time sacrificed in Szabo's article, it is not an ideal way to measure the importance of incoming client connections, but it is better than existing systems which are essentially a lottery, or in some cases "let the bad guy win". It is not perfect but rather a "proxy measure" which gives a service a deterministic ranking system of roughly those clients who most badly want or need access.</p>
+<p><img alt="Drawing of an hourglass" src="https://mccormick.cx/gfx/blogref/hashcash-auctions/hourglass.svg"></p>
+<p>At first this system seems unfair - those clients with the most CPU are able to dominate access to resources - but notice that it is much fairer in the worst case where a motivated legitimate client can still get access under DoS or spam attack by working hard to out-compete just a single instance of the attacker. Given enough motivated legitimate users there now also exists a way for them to collectively out-compete a spam or DoS attack. In other words, utilising this scheme has a better failure mode than the free-for-all which normally prevails in networked systems.</p>
+<p>Another way of looking at this system is that we have inverted the security aims from "keep out the bad guys" to "keep in the good guys". By giving motivated users a way to express the strength of their need we are able to keep those clients connected who signal the most need to access to the resources. We are able to preference those users who will actually utilise the resource with a higher probability than those users who will waste it, because wasting it is now costly.</p>
+<p>A further benefit is that the service utilising this scheme is protected from hard failure. In the worst case failure mode an attacker is only able to deplete resources up to the comfortable hard-limit <code>R</code> specified by the server, meaning the server is never placed under such high load that it entirely crashes and burns, so long as <code>R</code> is specified within serviceable bounds.</p>
+<p>In the real world there is always a constraint upon resources, and it is often the case that those wanting to consume a resource must hustle harder to get access. This scheme has an honesty that mirrors the reality of constrained resources rather than pretending that resources are infinite, which is what many historically optimistic decentralized systems do to their detriment. A computer cannot consume more disk space than 100% of disk, and it cannot utilise more CPU time than 100% of CPU time. Modern network services are often deployed without acknowledging these real constraints and with vague hand-waving about "scaling" by adding more machines to accommodate load. That's fine for Silicon Valley backed ventures with money to burn but decentralized systems are often run by volunteers contributing their precious personal resources. Silicon Valley assumptions on volunteer run networks are likely to lead to ruin.</p>
+<p>Finally, this scheme has additional emergent benefits in the case where clients have a choice of decentralized service providers. This case is common in decentralized systems where some subset of participants run their own "full nodes" which other clients may then utilize.</p>
+<h3>Bottom-up load balancing</h3>
+<p>The further interesting consequence of the hashcash auction scheme arises when we have many service nodes providing the same decentralized service. In the auction-determined proof-of-work difficulty setting, clients now have a clear signal about which nodes are under most heavy use and can freely choose those nodes where the PoW, and hence the resource usage, is lower. Given a choice between node X which requires a very high PoW and node Y which requires a lower PoW, a client will naturally try to connect to node Y first.</p>
+<p><img alt="Bottom-up load balancing" src="https://mccormick.cx/gfx/blogref/hashcash-auctions/figure-4-load-balancing.svg"></p>
+<p>The result of clients seeking lower-difficulty service nodes is that they spread themselves more evenly across the available servers. This less clustered network graph can lead to a healthier more decentralized system without requiring any kind of central coordination to acheive it. This emergent effect is a sort of bottom-up load balancing system.</p>
+<h3>Expiry and time preference</h3>
+<p>Decentralized systems differ in the way in which resources are allocated over time. Sometimes the resource provided by nodes is small and fast, such as UDP packets in Bittorrent's DHT. Other times the resource may be longer lived and more expensive on a per-unit basis, for example disk space storage or a regularly run cron job.</p>
+<p>In the situation where resources are long lived and expensive to maintain it makes sense to require clients to periodically re-bid for their access to the resources in question. For example, rather than storing a connecting client's data on disk indefinitely the service node could require that a client re-bids for the disk space once a month or once a year.</p>
+<p>A variant on this would be to use a time-based weighting factor on the PoW submitted by connecting clients such that the PoW of more recent connections are weighted higher during bid sorting than older connections. For example if you wanted to preference more recent connections instead of sorting on PoW you could sort on some variant of <code>PoW / (t + 1)</code> where <code>t</code> is the time since connection.</p>
+<p><img alt="Graph of PoW over t plus 1" src="https://mccormick.cx/gfx/blogref/hashcash-auctions/figure-5-pow-over-t-plus-one.svg"></p>
+<p>In the parlance of economics this introduces a time preference into the system.</p>
+<h3>Example</h3>
+<p>Let's close with an example.</p>
+<p>Imagine a decentralized social network where users are able to make posts and collect and publish replies to those posts. This can be accomplished in a decentralized way by representing users as key pairs and having every post and every reply signed by its owner's key pair to demonstrate authenticity rather than relying on a centralized trusted third party for authentication. While a user is online they can host their own set of cryptographically signed posts for others to download via a peer-to-peer network, and collect replies to those posts in the same way. However, what happens when the user goes offline, turns off their devices, goes to sleep etc.?</p>
+<p>One solution is to have "followers" of the user automatically mirror their posts for other users to download while they are offline. This solution is better than nothing but falls short when a user has few followers or only has followers in the same timezone such that they will all be offline around the same time. Segments of the social network would go dark for periods of time leading to a lack of reliability of access and a form of accidental time-based self-censorship. Some audiences may be satisfied with such a constraint as a tradeoff for a higher degree of privacy and overall censorship resistance, but a mainstream audience is unlikely to accept this lack of reliability.</p>
+<p>A more robust solution would be to back this up with a set of volunteer run "full nodes" which users could enlist to mirror data and collect replies in their absence. This architecture immediately begs a number of questions around allocation of the "full node" contributed resources of disk space and bandwidth. How do nodes protect themselves against greedy clients taking all bandwidth and disk space? How do clients protect against spammy replies? How do nodes protect against censorship via resource exhaustion and DoS?</p>
+<p>Using the "hashcash auction" we can get a reasonable solution to these problems, bringing higher availability to the system. Those nodes which provide the service of replicating user posts would measure how many clients they are willing and able to serve based on system resources. They can each do this by measuring their disk space for example and allocating a fixed amount of disk per user to a fixed number of users <code>R</code> keeping this constraint within the disk space each has available. Each full node then requires connecting users to bid for a storage slot for the hosting of their posts while offline. Only those clients who are able to demonstrate their need the most strongly will be able to use the offline-replication service of a node. When new nodes are deployed clients will naturally tend towards them as they choose the lower PoW requirement relative to nodes which are serving many existing connections and therefore have higher PoW requirements.</p>
+<p>Those users who might run a full node, and others interested in the health of the network, also have a clear signal as to the current load on the whole system and the relative need for more nodes by looking at the PoW they require in aggregate. People who might run a voluneer node are also provided an assurance that there is a fixed cost on the resource they will be donating, making it more likely that people will be willing to run full nodes to support the system. Finally, there is an incentive to running a full node as the user could white-list the cryptographic keys of their own devices and those of their friends and family, meaning that those accounts are always given preference over the accounts of strangers, bringing benefit to both sets of users.</p>
+<p><img alt="Drawing of Wampum beads" src="https://mccormick.cx/gfx/blogref/hashcash-auctions/wampum-beads.svg"></p>
+<h3>Addenda</h3>
+<ol>
+<li>
+<p>In the spirit of "cypherpunks code" I recently published <a href="https://npmjs.org/packages/scrypt-hashcash">scrypt-hashcash</a> which provides a basis upon which to validate some of these ideas on the web. For example browser based clients could bid for resources by performing a hashcash PoW using this library and submit it via HTTP, WebSocket, or WebRTC connection to the service conducting the resource auction.</p>
+</li>
+<li>
+<p>It is interesting that Hal Finney touched on a related idea in <a href="https://nakamotoinstitute.org/finney/rpow/experiments.html">RPOW enabled BitTorrent</a> and in true cypherpunk tradition offered code implementing his ideas:</p>
+</li>
+</ol>
+<blockquote>
+<p>Imagine a version of BitTorrent where nodes that have completed their downloading (called "seeders") could earn RPOWs by continuing to upload. And what could they do with those RPOWs? Imagine further that this version of BitTorrent allowed nodes to send RPOWs in order to get higher priority from other nodes which are downloading. Just such an experimental, RPOW-enhanced version of BitTorrent is now available for download.</p>
+</blockquote>
+    </article>
+
+        <div class="tags">
+            <p>tags: <a href="/tag/tech.html">tech</a>, <a href="/tag/cryptography.html">cryptography</a>, <a href="/tag/hashcash.html">hashcash</a>, <a href="/tag/proof-of-work.html">proof-of-work</a>, <a href="/tag/bitcoin.html">bitcoin</a>, <a href="/tag/workblog.html">workblog</a></p>
+        </div>
+
+    <hr>
+
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                            <li>
+                                <a href="https://github.com/chr15m">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://twitter.com/mccrmx">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="mailto:chris@mccormickit.com">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://mccormickit.com/resume">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-file fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://mccormick.cx/news/tags/workblog.rss">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                    </ul>
+<p class="copyright text-muted">
+    Blog powered by <a href="http://getpelican.com">Pelican</a>,
+    which takes great advantage of <a href="http://python.org">Python</a>. <br />        &copy;  Chris McCormick
+</p>                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="/theme/js/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/theme/js/bootstrap.min.js"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="/theme/js/clean-blog.min.js"></script>
+
+</body>
+
+</html>
