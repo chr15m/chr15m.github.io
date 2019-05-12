@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+        <title>BEP44 For Decentralized Applications</title>
+
+        <link href="https://mccormick.cx/news/tags/workblog.rss" type="application/atom+xml" rel="alternate" title="McCormick Tech Full Atom Feed" />
+        <!-- Bootstrap Core CSS -->
+        <link href="/theme/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="/theme/css/clean-blog.min.css" rel="stylesheet">
+
+        <!-- Code highlight color scheme -->
+            <link href="/theme/css/code_blocks/darkly.css" rel="stylesheet">
+
+            <!-- CSS specified by the user -->
+            <link href="/static/blog.css" rel="stylesheet">
+
+        <!-- Custom Fonts -->
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <script>
+    window.onload = function(ev) {
+      var large = "static/chris-mccormick-new-york-state-big.jpg";
+      var bg = new Image();
+      var style = document.body.style;
+      bg.onload = function() {
+        style["backgroundImage"] = "url(" + large + ")";
+      }
+      bg.src = large;
+    }
+  </script>
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+
+        <meta name="description" content="In 2014 Arvid Norberg and Steven Siloti came up with a BitTorrent extension called BEP44. The basic purpose of BEP44 is to allow people...">
+
+        <meta name="author" content="Chris McCormick">
+
+        <meta name="tags" content="tech">
+        <meta name="tags" content="cryptography">
+        <meta name="tags" content="decentralization">
+        <meta name="tags" content="workblog">
+
+	                <meta property="og:locale" content="">
+		<meta property="og:site_name" content="McCormick Tech">
+
+	<meta property="og:type" content="article">
+            <meta property="article:author" content="/author/chris-mccormick.html">
+	<meta property="og:url" content="/bep44-for-decentralized-applications.html">
+	<meta property="og:title" content="BEP44 For Decentralized Applications">
+	<meta property="article:published_time" content="2019-05-12 11:28:48+08:00">
+            <meta property="og:description" content="In 2014 Arvid Norberg and Steven Siloti came up with a BitTorrent extension called BEP44. The basic purpose of BEP44 is to allow people...">
+
+            <meta property="og:image" content="/theme/images/post-bg.jpg">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@mccrmx">
+        <meta name="twitter:title" content="BEP44 For Decentralized Applications">
+
+            <meta name="twitter:image" content="/theme/images/post-bg.jpg">
+
+            <meta name="twitter:description" content="In 2014 Arvid Norberg and Steven Siloti came up with a BitTorrent extension called BEP44. The basic purpose of BEP44 is to allow people...">
+</head>
+
+<body class="">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">McCormick Tech</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+        <header class="intro-header" style="background-color: transparent">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>BEP44 For Decentralized Applications</h1>
+                        <span class="meta">Sun 12 May 2019</span>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="content">
+            	<script src="https://mccormick.cx/tinysignup.php?list=invention&message=Sign up to my newsletter to hear about tech I'm building:"></script>
+    <!-- Post Content -->
+    <article>
+        <p><img alt="Depiction of decentralized network" src="https://mccormick.cx/gfx/blogref/bep44/decentralized-header.svg"></p>
+<p>In 2014 Arvid Norberg and Steven Siloti came up with a BitTorrent extension called <a href="http://bittorrent.org/beps/bep_0044.html">BEP44</a>. The basic purpose of BEP44 is to allow people to store small pieces of information in a part of the BitTorrent network called the DHT. The DHT ("distributed hash table") is a key/value lookup table that is highly decentralized. Prior to BEP44 it was used to look up the IP addresses of peers from the hashes of the torrent they were sharing.</p>
+<p>BEP44 introduces two new ways of storing key-value data in the DHT. The first is the ability to look up small bits of information keyed directly on their hash. The second allows for the storage of cryptographically authenticated data, keyed on the public key. What this means is if you have some public key K then you can look up authenticated blobs of data stored in the DHT by the owner of that key. This opens up a variety of useful abilities to people building decentralized applications.</p>
+<p>For instance when you distribute a file on BitTorrent it is immutable - you can't change it - but BEP44 provides a way to tell people "hey, there is a new version of this file that I shared before which you can find over here" in a secure and authenticated way. It turns out that this basic mechanism can be used to build a wide variety of decentralized, authenticated functionality and people have built cool experiements like <a href="https://github.com/lmatteis/peer-tweet">a decentralized microblog</a> using it.</p>
+<p>The purpose of this post is to show you how the datastructure works and how to apply it more widely in your own software.</p>
+<p>If you just want a working implementation you can use, check out the <a href="https://www.npmjs.com/package/decentral-utils">decentral-utils JavaScript library</a> which has a single-function implementation of the datastructure and algorithm which you can use in the browser. Web browsers unfortunately do not have direct access to the BitTorrent DHT, but the library is still useful for authenticating up-to-date data blobs that are passed around between browsers, for example over WebRTC.</p>
+<h3>What's good about BEP44</h3>
+<p>Most of the advantage of BEP44 comes from the cryptographic signing. What this offers is a way for somebody (let's call her Alice) to verify that a piece of data from somebody else (let's call him Bob) is authentic and that it has not been tampered with. You can do cryptographic signing without BEP44 of course.</p>
+<p>However, the BEP44 specification brings some other features for building decentralized systems:</p>
+<ul>
+<li>Namespacing against a public key.</li>
+<li>Replay attack prevention.</li>
+<li>A <a href="https://en.wikipedia.org/wiki/Compare-and-swap">compare-and-swap</a> primitive.</li>
+</ul>
+<p>The namespacing feature means that a single public key can have a bunch of different data blobs that others can authenticate. Because the datastructure is keyed on both the public key and a "salt" field, a single public key can store multiple blobs with different "salt" values as a sub-key.</p>
+<p>Replay attack prevention is accomplished with the sequence field, which in BEP44 is a monotonically increasing integer. The way a replay attack works is some adversary keeps an old copy of something you have signed and then when you are offline they send it again and pretend its a new message. Because the message is signed with your key people are fooled by the adversary into thinking the old data is current. In BEP44 the sequence field prevents this because the adversary will have a data blob with a lower sequence number than the last one you shared and they can't generate a new blob with a higher sequence number because they do not have your private key. So the replayed data blob will be rejected.</p>
+<p>Finally, the <a href="https://en.wikipedia.org/wiki/Compare-and-swap">compare-and-swap</a> primitive works by specifying a previous sequence number that the current data blob should replace. Peers will reject data blobs which don't replace the current sequence number they hold. In this way it's possible to acheive basic synchronisation and atomicity of data blobs. Using compare-and-swap guarantees that the new value you want to insert into the DHT can be calculated based on up-to-date information.</p>
+<h3>Example usage</h3>
+<p>Imagine you take upon yourself the small task of building a decentralized social network. Users have a timeline of posts which they have written. When they write a new post it should be appended to their timeline and people should see the updated timeline with the new post.</p>
+<p>In the centralized social network case this is easy. The social network provider TwitFace has an internal copy of the poster's timeline to which they add the new post. Followers are notified of the update and the updated timeline is sent to them by the provider. The way the authentication works in this case is the original poster has logged in with their password and so the provider knows who they are, but the receivers of the update must trust the provider.</p>
+<p><img alt="Depiction of centralized post authentication" src="https://mccormick.cx/gfx/blogref/bep44/decentralized-post-1.svg"></p>
+<p>How do readers know that the post is authentic and comes from the original poster? The reader must trust the provider completely. They must trust that the provider is showing them the authentic timeline of messages, that the messages have not been modified, that fake messages have not been injected into the timeline, that new messages have been added to the feed in a timely fashion, and that no message has been censored and removed from the feed by the provider.</p>
+<p>The problem with this model is that <a href="http://nakamotoinstitute.org/trusted-third-parties/">trusted third parties are security holes</a>. Centralized social networks do modify things people have said. They do inject posts into people's timelines (ads and worse). They do change the order and timing of posts to suit their own goals. Perhaps worst of all, they do censor posts completely.</p>
+<p>I won't get into the politics of censorship. Suffice it to say that censorship is fine and good right up until the point where your values differ from the entity doing the censoring. Values change, mysterious outside influences are myriad, and few people have complete alignment of values even with our noble corporate overlords in Silicon Valley.</p>
+<p>The basic goal here is that if you've chosen to read somebody's timeline you can trust that the feed of posts you are reading from them is authentic and complete and as they intended.</p>
+<p>Happily, we can use the BEP44 technique to route around the trusted-third-party centralized-social-network-provider security hole. BEP44 provides a way to receive an update and verify it cryptographically. It provides a way to know that this is the latest and complete version. It allows the verifier to do this using only the received data structure without requiring any kind of secret server side logic or password based authentiction like you would find in a centralized social network.</p>
+<p><img alt="Depiction of decentralized post authentication" src="https://mccormick.cx/gfx/blogref/bep44/decentralized-post-2.svg"></p>
+<h3>How it works</h3>
+<p>At the heart of the algorithm is a small datastructure which can be shared, updated by the sharer, and then shared again. Receivers can verify the updates are authentic. The idea is that you can share a small piece of authenticated data which points to a larger piece of immutable data. For instance, you can share an authenticated datastructure with the hash of a torrent containing all of your posts (an RSS feed for instance). Receivers then know that torrent is the current representation of your timeline of posts.</p>
+<p>The datastructure has the following fields:</p>
+<ul>
+<li>value</li>
+<li>seq</li>
+<li>cas [optiona]</li>
+<li>salt [optional]</li>
+<li>pubkey</li>
+<li>signature</li>
+</ul>
+<p>When a verifier receives a copy of this data structure they perform the following checks:</p>
+<ul>
+<li>Is the size of the <code>value</code> field below the maximum size?</li>
+<li>Does the <code>value</code> conform to the expected format / encoding?</li>
+<li>Is the <code>seq</code> number higher than the last <code>seq</code> number I saw (if any)?</li>
+<li>If <code>cas</code> is present does it match the previous <code>seq</code> number I have?</li>
+<li>Is the attached signature made with the private key corresponding to the attached pubkey over the datastructure's value, seq, and salt fields?</li>
+</ul>
+<p>In this final point they are checking that the structure has been digitally signed with the author's private key. This is accomplished by concatenating <code>salt + seq + value</code> and then checking that the signature is valid for that data and the given public key.</p>
+<p>In this way verifiers can know that an update from a known keypair/identity is authentic and current.</p>
+<p>Read <a href="/news/tags/cryptography">more posts on the subject of cryptography &amp; decentralized systems</a>.</p>
+    </article>
+
+        <div class="tags">
+            <p>tags: <a href="/tag/tech.html">tech</a>, <a href="/tag/cryptography.html">cryptography</a>, <a href="/tag/decentralization.html">decentralization</a>, <a href="/tag/workblog.html">workblog</a></p>
+        </div>
+
+    <hr>
+
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                            <li>
+                                <a href="https://github.com/chr15m">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://twitter.com/mccrmx">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="mailto:chris@mccormickit.com">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://mccormickit.com/resume">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-file fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://mccormick.cx/news/tags/workblog.rss">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                    </ul>
+<p class="copyright text-muted">
+    Blog powered by <a href="http://getpelican.com">Pelican</a>,
+    which takes great advantage of <a href="http://python.org">Python</a>. <br />        &copy;  Chris McCormick
+</p>                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="/theme/js/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/theme/js/bootstrap.min.js"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="/theme/js/clean-blog.min.js"></script>
+
+</body>
+
+</html>
