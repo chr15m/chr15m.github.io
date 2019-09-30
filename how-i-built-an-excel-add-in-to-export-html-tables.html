@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+        <title>How I built an Excel add-in to export HTML tables</title>
+
+        <link href="https://mccormick.cx/news/tags/workblog.rss" type="application/atom+xml" rel="alternate" title="McCormick Tech Full Atom Feed" />
+        <!-- Bootstrap Core CSS -->
+        <link href="/theme/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="/theme/css/clean-blog.min.css" rel="stylesheet">
+
+        <!-- Code highlight color scheme -->
+            <link href="/theme/css/code_blocks/darkly.css" rel="stylesheet">
+
+            <!-- CSS specified by the user -->
+            <link href="/static/blog.css" rel="stylesheet">
+
+        <!-- Custom Fonts -->
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <script>
+    window.onload = function(ev) {
+      var large = "static/chris-mccormick-new-york-state-big.jpg";
+      var bg = new Image();
+      var style = document.body.style;
+      bg.onload = function() {
+        style["backgroundImage"] = "url(" + large + ")";
+      }
+      bg.src = large;
+    }
+  </script>
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+
+        <meta name="description" content="An economist told me the worst part of her job is turning Excel data into HTML tables, so I built an add-in to fix it. Many software...">
+
+        <meta name="author" content="Chris McCormick">
+
+        <meta name="tags" content="tech">
+        <meta name="tags" content="code">
+        <meta name="tags" content="life">
+        <meta name="tags" content="workblog">
+
+	                <meta property="og:locale" content="">
+		<meta property="og:site_name" content="McCormick Tech">
+
+	<meta property="og:type" content="article">
+            <meta property="article:author" content="/author/chris-mccormick.html">
+	<meta property="og:url" content="/how-i-built-an-excel-add-in-to-export-html-tables.html">
+	<meta property="og:title" content="How I built an Excel add-in to export HTML tables">
+	<meta property="article:published_time" content="2019-09-30 20:25:00+08:00">
+            <meta property="og:description" content="An economist told me the worst part of her job is turning Excel data into HTML tables, so I built an add-in to fix it. Many software...">
+
+            <meta property="og:image" content="/theme/images/post-bg.jpg">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@mccrmx">
+        <meta name="twitter:title" content="How I built an Excel add-in to export HTML tables">
+
+            <meta name="twitter:image" content="/theme/images/post-bg.jpg">
+
+            <meta name="twitter:description" content="An economist told me the worst part of her job is turning Excel data into HTML tables, so I built an add-in to fix it. Many software...">
+</head>
+
+<body class="">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">McCormick Tech</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+        <header class="intro-header" style="background-color: transparent">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>How I built an Excel add-in to export HTML tables</h1>
+                        <span class="meta">Mon 30 September 2019</span>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="content">
+    <!-- Post Content -->
+    <article>
+        <p>An economist told me the worst part of her job is turning Excel data into HTML tables, so I <a href="https://exceltohtml.net/">built an add-in to fix it</a>.</p>
+<p>Many software developers probably don't realise that Microsoft Office add-ins these days are simply web pages which run inside of a panel in the UI. I suppose it was to be expected given the trend of the last couple of decades towards web based everything, but it still came as a surprise to me when I had to build one for a job. In my mind Office was still back in the world of COM objects and Delphi and DLLs.</p>
+<p>After discovering how easy it is, I decided to do it again for this side project. Here is how I did it.</p>
+<p>The plugin (whoops, "add-in") I built is called "<a href="https://exceltohtml.net/">Excel to HTML table</a>" and does what it says on the tin. You make a selection of cells, click "copy", and you get a clipboard full of the corresponding HTML code that will render those cells. After that you can paste the code into your text editor and use it in a site's HTML.</p>
+<p><img alt="Excel to HTML table screencast" src="https://exceltohtml.net/app/screencast.gif"></p>
+<p>Microsoft have some nodejs and yeoman projects to help you get up and running but I'm the sort of developer who likes to roll their own and keep things tight, tidy, and tiny. I like to build things from first principles so that I can understand what is going on at as low a level as possible. Here's what I discovered.</p>
+<p>The <a href="https://docs.microsoft.com/en-us/office/dev/add-ins/quickstarts/excel-quickstart-jquery">Microsoft Tutorial</a> has a lot of good info in it, but it's geared towards people using either Node + Yeoman or Visual Studio. If you're a text-editor-and-command-line person like me the best way to get started is just to grab the example <code>.html</code>, <code>.css</code>, and <code>.js</code> snippets from the Visual Studio version.</p>
+<h2>Get a dev server running</h2>
+<p>Any local HTTPS server will do. The difficult part is it must be HTTPS, even on localhost, or Word/Excel will refuse to load your add-in. My add-in is almost entirely client-side code and so I could get away with a small Python server using the built-in libraries like this:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">http.server</span> <span class="kn">import</span> <span class="n">HTTPServer</span><span class="p">,</span><span class="n">SimpleHTTPRequestHandler</span>
+<span class="n">httpd</span> <span class="o">=</span> <span class="n">HTTPServer</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">SimpleHTTPRequestHandler</span><span class="p">)</span>
+<span class="n">httpd</span><span class="o">.</span><span class="n">socket</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">wrap_socket</span><span class="p">(</span><span class="n">httpd</span><span class="o">.</span><span class="n">socket</span><span class="p">,</span> <span class="n">keyfile</span><span class="o">=</span><span class="s1">&#39;selfsigned.key&#39;</span><span class="p">,</span> <span class="n">certfile</span><span class="o">=</span><span class="s1">&#39;selfsigned.cer&#39;</span><span class="p">,</span> <span class="n">server_side</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">httpd</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+</pre></div>
+
+
+<p>As you can see this looks for the <code>.key</code> and <code>.cer</code> files in the local dir, and you can create those with openssl:</p>
+<div class="highlight"><pre><span></span>openssl req -x509 -newkey rsa:4096 -keyout selfsigned.key -out selfsigned.cer -days 365 -nodes -subj &quot;/C=US/ST=NY/O=localhost/OU=Localhost&quot;
+</pre></div>
+
+
+<p>You can do the same thing in nodejs with express if that's your bag by passing the right options to <code>https.createServer</code>:</p>
+<div class="highlight"><pre><span></span>const server = https.createServer({
+    key: fs.readFileSync(&#39;./selfsigned.key&#39;),
+    cert: fs.readFileSync(&#39;./selfsigned.pem&#39;)
+}, app).listen(8000)
+</pre></div>
+
+
+<p>Before you can load your add-in you should make sure your browser has accepted the self-signed cert or the add-in won't load. Do this by browsing to your localhost:8000 server and bypassing the certificate warnings.</p>
+<p>If you're debugging in the native Office app instead of Office Online, you will need to do this in Internet Explorer for it to work as far as I can tell.</p>
+<h2>Manifest validation</h2>
+<p><img alt="add-in.gif" src="https://mccormick.cx/gfx/blogref/joplin/d228746ae84a4159869d04a492147880.gif"></p>
+<p>Office finds out about the URL for your add-in using a "manifest" file. This file is XML and pretty fragile. You need to make sure it complies with the spec. Luckily Microsoft have a tool for verifying the add-in on the command line. Install the npm package <code>"office-toolbox": "0.2.1"</code> and then you can run a command like this:</p>
+<div class="highlight"><pre><span></span>./node_modules/.bin/office-toolbox validate -m ./path/to/manifest.xml
+</pre></div>
+
+
+<p>This will report most issues that come up.</p>
+<p>In the manifest you can use <code>https://localhost:8000/Home.html</code> and it will point to your local dev server when running.</p>
+<h2>The Code</h2>
+<p>The code itself is basically web code. You can use libraries like React and jQuery in your UI. The exception of course is when calling the native APIs. These are exposed through an interface like <code>Excel.run(...)</code> and make heavy use of promises for async. You will often find yourself doing <code>context.load()</code> and then waiting for the promise to resolve before doing the next thing in the document. The <a href="https://docs.microsoft.com/en-us/javascript/api/excel?view=excel-js-preview">API documentation is super useful</a> for figuring out what is possible and how to do it.</p>
+<h2>Debugging</h2>
+<p>When it comes to iterating on your code and debugging, by far the easiest way is to use <a href="https://office.com/">Office Online</a>. This is because it is already in the web browser so debugging works the same way as you are used to - the add-in is just an iframe.</p>
+<p>I was even able to do my dev &amp; debugging right at home in Firefox on GNU/Linux!</p>
+<p>At some point you will want to debug using an actual copy of Office running on Windows. I used Office 2016 on my wife's computer.</p>
+<p>If you are not a Windows developer the following tip will save you a lot of time when it comes to debugging native. It's called <a href="https://docs.microsoft.com/en-us/office/dev/add-ins/testing/debug-add-ins-using-f12-developer-tools-on-windows-10">"F12 Developer Tools"</a> and it's buried deep inside a Windows subdirectory in <code>C:\Windows\System32\F12\</code>.</p>
+<p>What this tool does is attach a "web console" type of debugger to your Office add-in instance running inside Office. You can do stuff like <code>console.log</code> and also see JavaScript errors which are thrown.</p>
+<h2>Ready to roll</h2>
+<p><img alt="8e9a6781754c869c84202121fb7a2fef.png" src="https://mccormick.cx/gfx/blogref/joplin/41d8c58de45343aa9e6a5fc332c4595b.png"></p>
+<p>Once you've got those pieces in place you should have a basic add-in up and running. After that it's all about <a href="https://docs.microsoft.com/en-us/javascript/api/excel?view=excel-js-preview">referencing the docs</a> to figure out how to do the thing you want your add-in to do.</p>
+<h2>Submit</h2>
+<p>Finally when you're ready to ship, you submit your manifest.xml to the <a href="https://sellerdashboard.microsoft.com/Application/Summary">App Source "seller dashboard"</a>. Expect to wait a few days for the validation team to get back to you, and to have to fix things. This process was useful as they see the software with a fresh pair of eyes and give actionable feedback.</p>
+<h2>LISP madness</h2>
+<p>So finally I should mention my LISP obsession. I actually wrote all the code for this plugin in a LISP called <a href="https://gozala.github.io/wisp/">Wisp</a>. It's a Clojure-like that compiles to JavaScript and seems quite similar to ClojureScript but with three core differences:</p>
+<ol>
+<li>It lacks almost all of the great features &amp; tooling of ClojureScript.</li>
+<li>It is closer to being "JavaScript with LISP syntax".</li>
+<li>It compiles down <em>very</em> small if you know what you are doing. How small? My final compiled .js bundle for this add-in is just <code>8.2k</code> non-gzipped.</li>
+</ol>
+<p>So that's about it. I hope you got something out of this article on building Microsoft Office plugins using web tech.</p>
+<p>Now back to open source dev for me. :)</p>
+    </article>
+
+        <div class="tags">
+            <p>tags: <a href="/tag/tech.html">tech</a>, <a href="/tag/code.html">code</a>, <a href="/tag/life.html">life</a>, <a href="/tag/workblog.html">workblog</a></p>
+        </div>
+
+    <hr>
+
+            	<script src="https://mccormick.cx/tinysignup.php?list=invention&message=Sign up to my newsletter to hear about tech I'm building:"></script>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                            <li>
+                                <a href="https://github.com/chr15m">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://twitter.com/mccrmx">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="mailto:chris@mccormickit.com">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://mccormickit.com/resume">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-file fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://mccormick.cx/news/tags/workblog.rss">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                    </ul>
+<p class="copyright text-muted">
+    Blog powered by <a href="http://getpelican.com">Pelican</a>,
+    which takes great advantage of <a href="http://python.org">Python</a>. <br />        &copy;  Chris McCormick
+</p>                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="/theme/js/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/theme/js/bootstrap.min.js"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="/theme/js/clean-blog.min.js"></script>
+
+</body>
+
+</html>
