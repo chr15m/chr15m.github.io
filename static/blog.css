@@ -1,7 +1,14 @@
-body {
+/*body {
   background-image: url(../static/chris-mccormick-new-york-state.jpg);
   background-repeat: no-repeat;
   background-size: 100%;
+}*/
+
+body {
+  max-width: 100%;
+  width: 1024px;
+  text-align: center;
+  padding-top: 5em;
 }
 
 header.intro-header {
